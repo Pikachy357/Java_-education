@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 class IsPalindrom{
     public void main(String[] args) {
-        String s = "nagana";
+        String s = "0P";
         System.out.println(isPalindrome(s));
     }
 
@@ -10,15 +10,18 @@ class IsPalindrom{
         char[] test = new char[s.length()];
         int count = 0;
         for (int i = 0; i < s.length(); i++){
-            for (int j = 0; j < 28; j++){
-                if (s.charAt(i) == 'a'+ j){
-                    test[count] = (char)('a'+ j);
-                    count++;
+            char c = s.charAt(i);
+            if (c>= '0' && c<= '9'){
+                test[count++] = c;
+                continue;
+            }
+            for (int j = 0; j < 26; j++){
+                if (c == 'a'+ j){
+                    test[count++] = (char)('a'+ j);
                     break;
                 }
-                if (s.charAt(i) == 'A'+ j){;
-                    test[count] = (char)('A'+ j + 32);
-                    count++;
+                if (c == 'A'+ j){;
+                    test[count++] = (char)('a'+ j);
                     break;
                 }
             }
