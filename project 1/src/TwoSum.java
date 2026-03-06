@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 class TwoSum {
     public void main(String[] args) {
         int[] s = {-1, -2, -3, -4, -5};
@@ -9,7 +7,6 @@ class TwoSum {
 
     public int[] twoSum(int[] nums, int target) {
         int[] indexSum = new int[2];
-        int buf = 0;
         for (int i = 0; i < nums.length; i++) {
             indexSum[0] = i;
             for (int j = i + 1; j < nums.length; j++) {
