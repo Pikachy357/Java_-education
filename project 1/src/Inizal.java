@@ -1,7 +1,42 @@
 import java.util.Scanner;
+
 public class Inizal {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        show_menu();
+        start_select(sc);
+    }
+
+    static void show_menu() {
+        System.out.println("введите вариант: 1 - слож/выч/умнож/дел/дел по мод - 2 целых чисел");
+        System.out.println("введите вариант: 2 - приведение типа и инициализация переменных");
+        System.out.println("введите вариант: 3 - для ввода масива из n элементов ");
+        System.out.println("введите вариант: 4 - считываем символ и выводим его asci код");
+    }
+
+    static boolean two_int(Scanner sc) {
+        System.out.println("введите 2 целых числа:");
+        boolean error = false;
+        Integer a = add_int(sc);
+        if (a == null)
+            error = true;
+        if (!error) {
+            Integer b = add_int(sc);
+            if (b == null)
+                error = true;
+            if (!error) {
+                System.out.println(a + "+" + b + " = " + (a + b));
+                System.out.println(a + "-" + b + " = " + (a - b));
+                System.out.println(a + "*" + b + " = " + a * b);
+                System.out.println(a + "/" + b + " = " + (double) a / b);
+                System.out.println(a + "%" + b + " = " + (a % b));
+            }
+
+        }
+        return error;
+    }
+
+    static void print_peren() {
         byte b = 16;
         short s = 257;
         int x = 2000000000;
@@ -9,118 +44,94 @@ public class Inizal {
         float f = 2312.2131F;
         int a = (int) d;
         double d2 = x;
+        System.out.println("int = " + x);
+        System.out.println("byte = " + b);
+        System.out.println("short = " + s);
+        System.out.println("int = " + x);
+        System.out.println("double = " + d);
+        System.out.println("float = " + f);
+        System.out.println("(int) double = " + a);
+        System.out.println("double2 = " + d2);
+    }
+
+    static boolean read_arr(Scanner sc) {
         boolean error = false;
-        int select = 0;
-        System.out.println("введите вариант: 1 - слож/выч/умнож/дел/дел по мод - 2 целых чисел");
-        System.out.println("введите вариант: 2 - приведение типа и инициализация переменных    "
-            + "byte b = 16;\n"
-            + "short s = 257;\n"
-            + "int x = 2000000000;\n"
-            + "double d = 1.23123123;\n"
-            + "float f = 2312.2131F;\n"
-            + "int a = (int) d;\n"
-            + "double d2 = x;");
-        System.out.println("введите вариант: 3 - для ввода масива из n элементов ");
-        System.out.println("введите вариант: 4 - считываем символ и выводим его asci код");
-        if (!sc.hasNextInt()) {
+        System.out.println("Введите n (количество элементов массива):");
+        Integer n = add_int(sc);
+        if (n < 1 || n == null) {
             error = true;
         }
         if (!error) {
-            select = sc.nextInt();
+            Integer[] arr = new Integer[n];
+            for (int i = 0; i < n; i++) {
+                arr[i] = add_int(sc);
+                if (arr[i] == null) {
+                    error = true;
+                    break;
+                }
+            }
+            if (!error) {
+                int sum = arr[0], max = arr[0], min = arr[0];
+                for (int i = 1; i < n; i++) {
+                    sum += arr[i];
+                    if (arr[i] > max) {
+                        max = arr[i];
+                    }
+                    if (arr[i] < min) {
+                        min = arr[i];
+                    }
+                }
+                double avg = (double) sum / n;
+                System.out.println("sum = " + sum + "max = " + max + "min = " + min + "abg = " + avg);
+            }
+        }
+        return error;
+    }
+
+    static Integer add_int(Scanner sc) {
+        Integer x = 0;
+        if (!sc.hasNextInt()) {
+            x = null;
+        }
+        if (x != null) {
+            x = sc.nextInt();
+        }
+        return x;
+    }
+
+    static void start_select(Scanner sc) {
+        boolean error = false;
+        Integer select = add_int(sc);
+        if (select == null) {
+            error = true;
         }
         if (!error) {
             switch (select) {
                 case 1 -> {
-                    System.out.println("введите 2 целых числа:");
-                    int a1 = 0;
-                    if (!sc.hasNextInt()) {
-                        error = true;
-                    }
-                    if (!error) {
-                        a1 = sc.nextInt();
-                    }
-                    if (!sc.hasNextInt()) {
-                        error = true;
-                    }
-                    int b1 = 0;
-                    if (!error) {
-                        b1 = sc.nextInt();
-                    }
-                    
-                    if (!error) {
-                        if (b1 == 0) {
-                            error = true;
-                        }
-                    }
-                    if (!error){
-                    System.out.println("a1+b1 = " + (a1 + b1));
-                    System.out.println("a1-b1 = " + (a1 - b1));
-                    System.out.println("a1*b1 = " + a1 * b1);
-                    System.out.println("a1/b1 = " + (double)a1 / b1);
-                    System.out.println("a1%b1 = " + (a1 % b1));
-                    }
+                    if (!error)
+                        error = two_int(sc);
                 }
                 case 2 -> {
-                    System.out.println("int = " + x);
-                    System.out.println("byte = " + b);
-                    System.out.println("short = " + s);
-                    System.out.println("int = " + x);
-                    System.out.println("double = " + d);
-                    System.out.println("float = " + f);
-                    System.out.println("(int) double = " + a);
-                    System.out.println("double2 = " + d2);
+                    print_peren();
                 }
-                case 3 ->{
-                    System.out.println("Введите n (количество элементов массива):");
-                        if (!sc.hasNextInt()) {
-                            error = true;
-                        }
-                        if (!error){
-                            int n = sc.nextInt();
-                            if (n<1){
-                                error = true;
-                            }
-                            if (!error){
-                                int[] arr = new int[n];   
-                                for (int i = 0; i < n; i++){
-                                    if (!sc.hasNextInt()) {
-                                    error = true;
-                                    }
-                                    if (!error){
-                                        arr[i] = sc.nextInt();
-                                    }
-                                    if (error){
-                                        break;
-                                    }
-                                }
-                                if (!error){     
-                                    int sum = arr[0], max = arr[0], min = arr[0];            
-                                    for (int i = 1; i < n; i++ ){
-                                        sum += arr[i];
-                                        if (arr[i] > max){
-                                            max = arr[i];
-                                        } 
-                                        if (arr[i] < min){
-                                            min = arr[i];
-                                        }
-                                    }
-                                    double avg = (double)sum / n;
-                                    System.out.println("sum = " + sum + "max = " + max + "min = " + min + "abg = " + avg);
-                                }
-                            }
-                        }
+                case 3 -> {
+                    if (!error)
+                        error = read_arr(sc);
                 }
-                case 4 ->{
+                case 4 -> {
                     System.out.print("Ведите один символ : ");
                     String line = sc.nextLine();
-                    if (line.length() != 1){
+                    if (line.length() != 1) {
                         error = true;
                     }
-                    if (!error){
+                    if (!error) {
                         char c = line.charAt(0);
-                        System.out.println("введён символ - " + c + "его ASCI кол - " + (int)c);
+                        System.out.println("введён символ - " + c + "его ASCI кол - " + (int) c);
                     }
-                    
+
+                }
+                default -> {
+                    error = true;
                 }
             }
         }
