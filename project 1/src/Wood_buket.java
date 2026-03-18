@@ -9,43 +9,31 @@ public class Wood_buket {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
         String[] buff = reader.readLine().split(" ");
-        int sum = 0;
+        long sum = 0;
         int p = Integer.parseInt(buff[0]);
         int v = Integer.parseInt(buff[1]);
         buff = reader.readLine().split(" ");
         int q = Integer.parseInt(buff[0]);
         int m = Integer.parseInt(buff[1]);
-        short v1 = 1;
-        short m1 = 1;
-        if (p == q && v == m) {
-            sum = v * 2 + 1;
-        }
-
-        if ((p + v == q - m) || (q + m == p - v)) {
-            sum = v * 2 + 1 + m * 2;
-        }
-
-        if (q + m > p + v) {
-            sum = (q + m) - (p - v) * +1;
-        }
-        if (p + v > q + m) {
-            sum = (p + v) - (q - m) + 1;
-        }
-        if ((q + m > p + v) && (m == 0) && (v != 0)) {
-            sum = v * 2 + 1;
-        }
-
-        if ((q + m > p + v) && (m != 0) && (v == 0)) {
-            sum = m * 2 + 1;
-        }
-        if ((p + v > q + m) && (m == 0) && (v != 0)) {
-            sum = v * 2 + 1;
-        }
-        if ((p + v > q + m) && (m != 0) && (v == 0)) {
-            sum = m * 2 + 1;
-        }
-        if (m==0 && v==0){
-            sum = 0;
+        long V_left = p - v;
+        long V_right = p + v;
+        long M_left = q -m;
+        long M_right = q + m;
+        if (V_right < M_left || M_right < V_left){
+            sum = M_right - M_left +1 + V_right - V_left + 1;
+        } else{
+            long left = 0, right = 0;
+            if (M_left <= V_left){
+                left = M_left;
+            } else{
+                left = V_left;
+            }
+            if (M_right >= V_right){
+                right = M_right;
+            } else{
+                right = V_right;
+            }
+            sum = right-left +1;
         }
         writer.write(String.valueOf(sum));
         reader.close();
