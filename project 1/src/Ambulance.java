@@ -4,34 +4,44 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-public class Axaxa {
+public class Ambulance {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
-        int n = Integer.parseInt(reader.readLine());
-        String otvet = reader.readLine();
-        int count = 0;
-        int max = 0;
-        for (int i = 0; i < n-1;  i++){
-            if (otvet.charAt(i) != 'h' && otvet.charAt(i) != 'a'){
-               count = 0;
+        String [] buff = reader.readLine().split(" ");
+        int k1 = Integer.parseInt(buff[0]);
+        int m = Integer.parseInt(buff[1]);
+        int k2 = Integer.parseInt(buff[2]);
+        int p2 = Integer.parseInt(buff[3]);
+        int n2 = Integer.parseInt(buff[4]);
+        if (n2 > m){ // если жтаж больще чем максимальное кол-во этажей
+            writer.write( "-1" + " -1");
+        } else{
+            int l = (p2-1)*m + (n2-1); // этажей перед квартирой к2
+            int count = 0;
+            int length = (int)Math.floor(k2/(l-1)) - (int)Math.ceil(k2/(l+1));
+            if (length <1){
+                writer.write( "-1" + " -1");
             } else{
-                if (count == 0) count = 1;
-                if ((otvet.charAt(i+1) == 'h' || otvet.charAt(i+1) == 'a') && (otvet.charAt(i+1) != otvet.charAt(i))){
-                    count ++;
-                } else{
-                    count = 1;
+                int [] P1 = new int[length];
+                int [] N1 = new int[length];
+                for (int x = (int)Math.ceil(k2/(l+1)), i = 0; x<k2/l; x++, i++){
+                    P1[i] = (k1-1)/(x * m) + 1; 
+                    N1[i] = ((k1-1) % (x*m))/x +1;
+                    
                 }
-            }
-
-            if (count > max){
-                max = count;
+                int p1 = P1[0],n1 = N1[0];
+                for (int i = 0; i < length-1; i++){
+                    if (P1[i] != P1[i+1]){
+                        p1 = 0;
+                    }
+                    if (N1[i] != N1[i+1]){
+                        n1 = 0;
+                    }
+                }
+                writer.write( p1 + " " + n1 + "\n");
             }
         }
-        if (max == 0 && (otvet.charAt(n-1) == 'h' || otvet.charAt(n-1) == 'a')){
-            max = 1;
-        }
-        writer.write(max + "\n");
         reader.close();
         writer.close();
     }
