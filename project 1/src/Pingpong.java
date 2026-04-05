@@ -4,43 +4,44 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
- class Ball {
+class Ball {
     int x = 0;
     int y = 0;
 
-    Ball(int x, int y){
+    Ball(int x, int y) {
         this.x = x;
-        this.y =y;
+        this.y = y;
     }
-     int show_position_X() {
+
+    int show_position_X() {
         return x;
     }
 
-     int show_position_Y() {
+    int show_position_Y() {
         return y;
     }
 
-    void position_change_X(int x){
+    void position_change_X(int x) {
         this.x = x;
     }
 
-    void position_change_Y(int y){
+    void position_change_Y(int y) {
         this.y = y;
     }
 
 }
 
- class Paddle {
+class Paddle {
     int x = 0;
     int y = 0;
     int size = 0;
 
-    Paddle(int y, int size){
+    Paddle(int y, int size) {
         this.y = y;
         this.size = size;
     }
 
-    void size(int s){
+    void size(int s) {
         size = s;
     }
 
@@ -48,56 +49,67 @@ import java.io.OutputStreamWriter;
         return y;
     }
 
-     void position_change_Y( int y) {
+    void position_change_Y(int y) {
         this.y = y;
     }
 }
- class Field{
+
+class Field {
     int x = 0;
     int y = 0;
-    void changeField(int x, int y){
+
+    void changeField(int x, int y) {
         this.x = x;
         this.y = y;
     }
-    void showField(Ball b, Paddle left, Paddle right){
-        for (int i = 0 ; i < y; i++){
-            for (int j = 0; j < x; j++){
-                if (i == 0 || i == y - 1){
-                    System.out.print("-");
-                } else {
-                    if (j == 0 || j == x - 1){
-                        System.out.print("|");
-                    } else{
 
-                        if(j == 1){
-                            if (i < left.show_position_Y() + (left.size / 2) && i > left.show_position_Y() - (left.size / 2) ){
-                                System.out.print("|");
+    void showField(Ball b, Paddle left, Paddle right) {
+        char c;
+        for (int i = 0; i < y; i++) {
+            for (int j = 0; j < x; j++) {
+                if (i == 0 || i == y - 1) {
+                    c = '-';
+                } else {
+                    if (j == 0 || j == x - 1) {
+                        c = '|';
+                    } else {
+                        c = ' ';
+                        if (i == b.show_position_Y() && j == b.show_position_X()) {
+                            c = 'o';
+                        } else {
+                            if (j == 1) {
+                                if (i <= left.show_position_Y() + (left.size / 2)
+                                        && i >= left.show_position_Y() - (left.size / 2)) {
+                                    c = '|';
+                                }
+                            } else {
+                                if (j == x - 2) {
+                                    if (i <= right.show_position_Y() + (right.size / 2)
+                                            && i >= right.show_position_Y() - (right.size / 2)) {
+                                        c = '|';
+                                    }
+                                }
                             }
                         }
-                        if(j == x-2){
-                            if (i < right.show_position_Y() + (right.size / 2) && i > right.show_position_Y() - (right.size / 2) ){
-                                System.out.print("|");
-                            }
-                        }
-                        if (i == b.show_position_Y() && j == b.show_position_X()){
-                            System.out.print("o");
-                        }
+
                     }
                 }
+                System.out.print(c);
             }
             System.out.println();
         }
     }
 }
+
 public class Pingpong {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
         Field pole = new Field();
-        pole.changeField(10,10);
-        Paddle left = new Paddle(1 , 2);
-        Paddle right = new Paddle(pole.x - 1, 2);
-        Ball b = new Ball(pole.x/2,pole.y/2);
+        pole.changeField(51, 17);
+        Paddle left = new Paddle(pole.y / 2, 3);
+        Paddle right = new Paddle(pole.y / 2, 3);
+        Ball b = new Ball(pole.x / 2, pole.y / 2);
         pole.showField(b, left, right);
         reader.close();
         writer.close();
