@@ -63,7 +63,7 @@ class Field {
         this.y = y;
     }
 
-    void showField(Ball b, Paddle left, Paddle right) {
+    void showField(Ball b, Paddle left, Paddle right, int store_left, int store_right) {
         char c;
         for (int i = 0; i < y; i++) {
             for (int j = 0; j < x; j++) {
@@ -98,11 +98,13 @@ class Field {
             }
             System.out.println();
         }
+        System.out.println("Store left:" + store_left + "   Store Right:" + store_right);
     }
 }
 
 public class Pingpong {
     public static void main(String[] args) throws IOException {
+        int store_left = 0, store_right = 0;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
         Field pole = new Field();
@@ -110,7 +112,7 @@ public class Pingpong {
         Paddle left = new Paddle(pole.y / 2, 3);
         Paddle right = new Paddle(pole.y / 2, 3);
         Ball b = new Ball(pole.x / 2, pole.y / 2);
-        pole.showField(b, left, right);
+        pole.showField(b, left, right, store_left, store_right);
         reader.close();
         writer.close();
     }
