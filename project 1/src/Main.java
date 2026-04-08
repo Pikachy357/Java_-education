@@ -1,50 +1,45 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
-        byte [][] pole = new byte [2001][2001];
-        int startx = 1000;
-        int starty = 1000;
-        pole[1000][1000] = 1;
-        String comand = reader.readLine();
-        int count = 0;
-        for (int i = 0 ; i < comand.length(); i++){
-            switch (comand.charAt(i)){
-                case 'U' ->{
-                    if (pole[++starty][startx] == 1){
-                        count++;
-                    }
+    public static void main(String[] args) {
+        User first = new User("Даниил");
+        User second = new User("Анна");
 
-                }
-                case 'L' ->{
-                    if (pole[starty][--startx] == 1){
-                        count++;
-                    } 
+        first.showInfo();
+        second.showInfo();
 
-                }
-                case 'D' ->{
-                    if (pole[--starty][startx] == 1){
-                        count++;
-                    }
-                }
-                case 'R' ->{
-                    if (pole[starty][++startx] == 1){
-                        count++;
-                    } 
-                }
-            }
-            if(pole[starty][startx] < 2){
-                pole[starty][startx]++;
-            }
+        User.showCreatedCount();
+
+        System.out.println("Квадрат числа 5: " + Utils.square(5));
+    }
+
+    class Utils {
+        public static int square(int x) {
+            return x * x;
         }
-        writer.write(String.valueOf(count));
-        reader.close();
-        writer.close();
+    }
+}
+
+class User {
+    public String role = "student";
+    private String name;
+    private int loginAttempts;
+    private static int createdCount = 0;
+
+    public User(String name) {
+        this.name = name;
+        this.loginAttempts = 0;
+        createdCount++;
+    }
+
+    public void showInfo() {
+        System.out.println("Имя: " + name + ", роль: " + role);
+        secret();
+    }
+
+    private void secret() {
+        System.out.println("Внутренний счетчик входов: " + loginAttempts);
+    }
+
+    public static void showCreatedCount() {
+        System.out.println("Создано объектов: " + createdCount);
     }
 }
