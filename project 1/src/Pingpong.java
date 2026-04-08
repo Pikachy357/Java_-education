@@ -30,14 +30,18 @@ class Ball {
 class Paddle {
     private int y = 0;
     private int size = 0;
+    private int max_y = 0;
+    private int min_y = 0;
 
     int show_size() {
         return size;
     }
 
     Paddle(Field f, int size) {
-        this.y = f.show_size_X() / 2;
+        this.y = f.show_size_Y() / 2;
         this.size = size;
+        max_y = f.show_size_Y() -1 - (size / 2 + 1) ;
+        min_y = 1 + size / 2;
     }
 
     void size(int s) {
@@ -50,6 +54,11 @@ class Paddle {
 
     void position_change_Y(int y) {
         this.y = y;
+    }
+    void up(Field pole){
+        if (y - 1 >= min_y ){
+            y--;
+        }
     }
 }
 
@@ -118,7 +127,7 @@ public class Pingpong {
         Paddle right_Paddle = new Paddle(pole, 3);
         Ball ball = new Ball(pole);
         Scanner sc = new Scanner(System.in);
-        // do {
+        do {
         pole.showField(ball, left_Paddle, right_Paddle, store_left, store_right);
         String select = sc.next();
         for (int i = 0; i < select.length(); i++) {
@@ -126,9 +135,11 @@ public class Pingpong {
                 case ' ' -> {
                 }
                 case 'a' -> {
-                    System.out.println("куку a");
+                    left_Paddle.up(pole);
+                    ball.next();
                 }
                 case 'A' -> {
+                    left_Paddle.up(pole);
                 }
                 case 'z' -> {
                 }
@@ -148,7 +159,7 @@ public class Pingpong {
 
             }
         }
-        // }while (store_left < 3 || store_right < 3);
+         }while (store_left < 3 || store_right < 3);
 
     }
 }
