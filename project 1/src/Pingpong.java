@@ -1,16 +1,10 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-
 class Ball {
-    int x = 0;
-    int y = 0;
+    private int x = 0;
+    private int y = 0;
 
-    Ball(int x, int y) {
-        this.x = x;
-        this.y = y;
+    Ball(Field f) {
+        this.x = f.show_size_X() / 2;
+        this.y = f.show_size_Y() / 2;
     }
 
     int show_position_X() {
@@ -32,12 +26,15 @@ class Ball {
 }
 
 class Paddle {
-    int x = 0;
-    int y = 0;
-    int size = 0;
+    private int y = 0;
+    private int size = 0;
 
-    Paddle(int y, int size) {
-        this.y = y;
+    int show_size(){
+        return size;
+    }
+
+    Paddle(Field f, int size) {
+        this.y = f.show_size_X() / 2 ;
         this.size = size;
     }
 
@@ -55,9 +52,15 @@ class Paddle {
 }
 
 class Field {
-    int x = 0;
-    int y = 0;
+    private int x = 0;
+    private int y = 0;
 
+    int show_size_X(){
+        return x;
+    }
+    int show_size_Y(){
+        return y;
+    }
     void changeField(int x, int y) {
         this.x = x;
         this.y = y;
@@ -78,14 +81,14 @@ class Field {
                             c = 'o';
                         } else {
                             if (j == 1) {
-                                if (i <= left.show_position_Y() + (left.size / 2)
-                                        && i >= left.show_position_Y() - (left.size / 2)) {
+                                if (i <= left.show_position_Y() + (left.show_size() / 2)
+                                        && i >= left.show_position_Y() - (left.show_size() / 2)) {
                                     c = '|';
                                 }
                             } else {
                                 if (j == x - 2) {
-                                    if (i <= right.show_position_Y() + (right.size / 2)
-                                            && i >= right.show_position_Y() - (right.size / 2)) {
+                                    if (i <= right.show_position_Y() + (right.show_size() / 2)
+                                            && i >= right.show_position_Y() - (right.show_size() / 2)) {
                                         c = '|';
                                     }
                                 }
@@ -103,17 +106,18 @@ class Field {
 }
 
 public class Pingpong {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
+
         int store_left = 0, store_right = 0;
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
+
         Field pole = new Field();
         pole.changeField(51, 17);
-        Paddle left = new Paddle(pole.y / 2, 3);
-        Paddle right = new Paddle(pole.y / 2, 3);
-        Ball b = new Ball(pole.x / 2, pole.y / 2);
-        pole.showField(b, left, right, store_left, store_right);
-        reader.close();
-        writer.close();
+        Paddle left_Paddle = new Paddle(pole, 3);
+        Paddle right_Paddle = new Paddle(pole, 3);
+        Ball ball = new Ball(pole);
+        pole.showField(ball, left_Paddle, right_Paddle, store_left, store_right);
+
+
+
     }
 }
