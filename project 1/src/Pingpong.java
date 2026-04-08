@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 class Ball {
     private int x = 0;
     private int y = 0;
@@ -29,12 +31,12 @@ class Paddle {
     private int y = 0;
     private int size = 0;
 
-    int show_size(){
+    int show_size() {
         return size;
     }
 
     Paddle(Field f, int size) {
-        this.y = f.show_size_X() / 2 ;
+        this.y = f.show_size_X() / 2;
         this.size = size;
     }
 
@@ -55,18 +57,20 @@ class Field {
     private int x = 0;
     private int y = 0;
 
-    int show_size_X(){
+    int show_size_X() {
         return x;
     }
-    int show_size_Y(){
+
+    int show_size_Y() {
         return y;
     }
+
     void changeField(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    void showField(Ball b, Paddle left, Paddle right, int store_left, int store_right) {
+    void showField(Ball ball, Paddle left, Paddle right, int store_left, int store_right) {
         char c;
         for (int i = 0; i < y; i++) {
             for (int j = 0; j < x; j++) {
@@ -77,7 +81,7 @@ class Field {
                         c = '|';
                     } else {
                         c = ' ';
-                        if (i == b.show_position_Y() && j == b.show_position_X()) {
+                        if (i == ball.show_position_Y() && j == ball.show_position_X()) {
                             c = 'o';
                         } else {
                             if (j == 1) {
@@ -106,18 +110,45 @@ class Field {
 }
 
 public class Pingpong {
-    public static void main(String[] args){
-
+    public static void main(String[] args) {
         int store_left = 0, store_right = 0;
-
         Field pole = new Field();
         pole.changeField(51, 17);
         Paddle left_Paddle = new Paddle(pole, 3);
         Paddle right_Paddle = new Paddle(pole, 3);
         Ball ball = new Ball(pole);
+        Scanner sc = new Scanner(System.in);
+        // do {
         pole.showField(ball, left_Paddle, right_Paddle, store_left, store_right);
+        String select = sc.next();
+        for (int i = 0; i < select.length(); i++) {
+            switch (select.charAt(i)) {
+                case ' ' -> {
+                }
+                case 'a' -> {
+                    System.out.println("куку a");
+                }
+                case 'A' -> {
+                }
+                case 'z' -> {
+                }
+                case 'Z' -> {
+                }
+                case 'k' -> {
+                }
+                case 'K' -> {
+                }
+                case 'm' -> {
+                }
+                case 'M' -> {
+                }
 
+                default -> {
+                }
 
+            }
+        }
+        // }while (store_left < 3 || store_right < 3);
 
     }
 }
