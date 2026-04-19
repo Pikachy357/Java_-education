@@ -3,6 +3,7 @@ import java.util.Scanner;
 class Ball {
     private int x = 0;
     private int y = 0;
+    boolean left = true, dawn = true;
 
     Ball(Field f) {
         this.x = f.show_size_X() / 2;
@@ -23,6 +24,44 @@ class Ball {
 
     void position_change_Y(int y) {
         this.y = y;
+    }
+    void next(Field f){
+        if (y == 1 || y == f.show_size_Y()-1 || x == 2 || x == f.show_size_Y()-2){
+            if (y == 1){
+                dawn = true;
+                next();
+            }
+            if (y == f.show_size_Y()-1){
+                dawn = false;
+                next();
+            }
+            if (x == 2){
+                if(!Paddle){
+                    x = f.show_size_X() / 2;
+                    y = f.show_size_Y() / 2;
+                    dawn = false;
+                    left = false;
+                    next();
+                } else{
+                    
+                }
+            }
+        } else {
+            next();
+    }
+    }
+    private void next(){
+            if (left){
+                x--;
+            } else {
+                x++;
+            }
+
+            if (dawn){
+                y++;
+            } else{
+                y--;
+            }
     }
 
 }
@@ -136,7 +175,7 @@ public class Pingpong {
                 }
                 case 'a' -> {
                     left_Paddle.up(pole);
-                    ball.next();
+                    ball.next(pole);
                 }
                 case 'A' -> {
                     left_Paddle.up(pole);
