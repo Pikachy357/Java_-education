@@ -25,52 +25,58 @@ class Ball {
     void position_change_Y(int y) {
         this.y = y;
     }
-    void next(Field f){
-        if (y == 1 || y == f.show_size_Y()-1 || x == 2 || x == f.show_size_Y()-2){
-            if (y == 1){
+
+    void next(Field f, Paddle paddle_left, Paddle paddle_right) {
+        if (y == 1 || y == f.show_size_Y() - 1 || x == 2 || x == f.show_size_Y() - 2) {
+            if (y == 1) {
                 dawn = true;
                 next();
             }
-            if (y == f.show_size_Y()-1){
+            if (y == f.show_size_Y() - 1) {
                 dawn = false;
                 next();
             }
-            if (x == 2){
-                if(!Paddle){
+            if (x == 2) {
+                if (paddle(paddle_left)) {
                     x = f.show_size_X() / 2;
                     y = f.show_size_Y() / 2;
-                    dawn = false;
-                    left = false;
+                    dawn = !dawn;
+                    left = !left;
                     next();
-                } else{
-                    
+                } else {
+
                 }
             }
         } else {
             next();
-    }
-    }
-    private void next(){
-            if (left){
-                x--;
-            } else {
-                x++;
-            }
-
-            if (dawn){
-                y++;
-            } else{
-                y--;
-            }
+        }
     }
 
+    private void next() {
+        if (left) {
+            x--;
+        } else {
+            x++;
+        }
+
+        if (dawn) {
+            y++;
+        } else {
+            y--;
+        }
+    }
+    private boolean paddle(Paddle p){
+        if ((y >= p.show_up_Y()) && (y <= p.show_dawn_Y())){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 class Paddle {
     private int y = 0;
     private int size = 0;
-    private int max_y = 0;
-    private int min_y = 0;
 
     int show_size() {
         return size;
@@ -79,8 +85,7 @@ class Paddle {
     Paddle(Field f, int size) {
         this.y = f.show_size_Y() / 2;
         this.size = size;
-        max_y = f.show_size_Y() -1 - (size / 2 + 1) ;
-        min_y = 1 + size / 2;
+
     }
 
     void size(int s) {
@@ -90,12 +95,29 @@ class Paddle {
     int show_position_Y() {
         return y;
     }
+    
 
     void position_change_Y(int y) {
         this.y = y;
     }
-    void up(Field pole){
-        if (y - 1 >= min_y ){
+
+    int show_up_Y (){
+        if (size % 2 == 0){
+            return y - size/2 + 1;
+        }else {
+            return y - size/2 ;
+        }
+    }
+    int show_dawn_Y (){
+        if (size % 2 == 0){
+            return y + size/2 ;
+        }else {
+            return y + size/2 ;
+        }
+    }
+
+    void up(Field pole) {
+        if (show_dawn_Y() >= 1) {
             y--;
         }
     }
@@ -167,38 +189,38 @@ public class Pingpong {
         Ball ball = new Ball(pole);
         Scanner sc = new Scanner(System.in);
         do {
-        pole.showField(ball, left_Paddle, right_Paddle, store_left, store_right);
-        String select = sc.next();
-        for (int i = 0; i < select.length(); i++) {
-            switch (select.charAt(i)) {
-                case ' ' -> {
-                }
-                case 'a' -> {
-                    left_Paddle.up(pole);
-                    ball.next(pole);
-                }
-                case 'A' -> {
-                    left_Paddle.up(pole);
-                }
-                case 'z' -> {
-                }
-                case 'Z' -> {
-                }
-                case 'k' -> {
-                }
-                case 'K' -> {
-                }
-                case 'm' -> {
-                }
-                case 'M' -> {
-                }
+            pole.showField(ball, left_Paddle, right_Paddle, store_left, store_right);
+            String select = sc.next();
+            for (int i = 0; i < select.length(); i++) {
+                switch (select.charAt(i)) {
+                    case ' ' -> {
+                    }
+                    case 'a' -> {
+                        left_Paddle.up(pole);
+                        ball.next(pole, left_Paddle, right_Paddle);
+                    }
+                    case 'A' -> {
+                        left_Paddle.up(pole);
+                    }
+                    case 'z' -> {
+                    }
+                    case 'Z' -> {
+                    }
+                    case 'k' -> {
+                    }
+                    case 'K' -> {
+                    }
+                    case 'm' -> {
+                    }
+                    case 'M' -> {
+                    }
 
-                default -> {
-                }
+                    default -> {
+                    }
 
+                }
             }
-        }
-         }while (store_left < 3 || store_right < 3);
+        } while (store_left < 3 || store_right < 3);
 
     }
 }
