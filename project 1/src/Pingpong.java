@@ -6,8 +6,8 @@ class Ball {
     boolean left = true, dawn = true;
 
     Ball(Field f) {
-        this.x = f.show_size_X() / 2;
-        this.y = f.show_size_Y() / 2;
+        this.x = f.show_size_X() / 2 - 1;
+        this.y = f.show_size_Y() / 2 - 1;
     }
 
     int show_position_X() {
@@ -27,20 +27,18 @@ class Ball {
     }
 
     void next(Field f, Paddle paddle_left, Paddle paddle_right) {
-        if (y == 1 || y == f.show_size_Y() - 1 || x == 2 || x == f.show_size_Y() - 2) {
+        if (y == 1 || y == f.show_size_Y() - 2 || x == 2 || x == f.show_size_X() - 3) {
+            if (y == 1 && )
             if (y == 1) {
                 dawn = true;
                 next();
             }
-            if (y == f.show_size_Y() - 1) {
+            if (y == f.show_size_Y() - 2) {
                 dawn = false;
                 next();
             }
             if (x == 2) {
                 if (paddle(paddle_left)) {
-                    x = f.show_size_X() / 2;
-                    y = f.show_size_Y() / 2;
-                    dawn = !dawn;
                     left = !left;
                     next();
                 } else {
@@ -116,9 +114,15 @@ class Paddle {
         }
     }
 
-    void up(Field pole) {
-        if (show_dawn_Y() >= 1) {
+    void up() {
+        if (show_up_Y() > 1) {
             y--;
+        }
+    }
+
+    void dawn(Field pole){
+        if (show_dawn_Y() < pole.show_size_Y() -2){
+            y++;
         }
     }
 }
@@ -194,25 +198,39 @@ public class Pingpong {
             for (int i = 0; i < select.length(); i++) {
                 switch (select.charAt(i)) {
                     case ' ' -> {
+                        ball.next(pole, left_Paddle, right_Paddle);
                     }
                     case 'a' -> {
-                        left_Paddle.up(pole);
+                        left_Paddle.up();
                         ball.next(pole, left_Paddle, right_Paddle);
                     }
                     case 'A' -> {
-                        left_Paddle.up(pole);
+                        left_Paddle.up();
+                        ball.next(pole, left_Paddle, right_Paddle);
                     }
                     case 'z' -> {
+                        left_Paddle.dawn(pole);
+                        ball.next(pole, left_Paddle, right_Paddle);
                     }
                     case 'Z' -> {
+                        left_Paddle.dawn(pole);
+                        ball.next(pole, left_Paddle, right_Paddle);
                     }
                     case 'k' -> {
+                        right_Paddle.up();
+                        ball.next(pole, left_Paddle, right_Paddle);
                     }
                     case 'K' -> {
+                        right_Paddle.up();
+                        ball.next(pole, left_Paddle, right_Paddle);
                     }
                     case 'm' -> {
+                        right_Paddle.dawn(pole);
+                        ball.next(pole, left_Paddle, right_Paddle);
                     }
                     case 'M' -> {
+                        right_Paddle.dawn(pole);
+                        ball.next(pole, left_Paddle, right_Paddle);
                     }
 
                     default -> {
