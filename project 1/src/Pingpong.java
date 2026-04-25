@@ -28,8 +28,10 @@ class Ball {
 
     void next(Field f, Paddle paddle_left, Paddle paddle_right) {
         if (y == 1 || y == f.show_size_Y() - 2 || x == 2 || x == f.show_size_X() - 3) {
-            if (y == 1 && )
             if (y == 1) {
+                if (x == 2) {
+                                        left = !left;
+                }
                 dawn = true;
                 next();
             }
@@ -42,8 +44,11 @@ class Ball {
                     left = !left;
                     next();
                 } else {
-
+                    next();
                 }
+            }
+            if (x == 1) {
+
             }
         } else {
             next();
