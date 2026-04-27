@@ -27,11 +27,7 @@ class Ball {
     }
 
     void next(Field f, Paddle paddle_left, Paddle paddle_right) {
-        if (y == 1 || y == f.show_size_Y() - 2 || x == 2 || x == f.show_size_X() - 3) {
             if (y == 1) {
-                if (x == 2) {
-                                        left = !left;
-                }
                 dawn = true;
                 next();
             }
@@ -39,20 +35,19 @@ class Ball {
                 dawn = false;
                 next();
             }
-            if (x == 2) {
-                if (paddle(paddle_left)) {
-                    left = !left;
-                    next();
+            if (x == 2 || x == f.show_size_X() - 3) {
+                if (paddle(paddle_left) || paddle(paddle_right)) {
+                    if (y == 1 || y == f.show_size_Y() - 2) {
+                        dawn = !dawn;
+                        left = !left;
+                    } else {
+                        left = !left;
+                        next();
+                    }
                 } else {
                     next();
                 }
             }
-            if (x == 1) {
-
-            }
-        } else {
-            next();
-        }
     }
 
     private void next() {
@@ -69,7 +64,7 @@ class Ball {
         }
     }
     private boolean paddle(Paddle p){
-        if ((y >= p.show_up_Y()) && (y <= p.show_dawn_Y())){
+        if ((y >= p.show_up_Y()) && (y <= p.show_dawn_Y()) &&  (p.show_position_X() - x) <= 1){
             return true;
         } else {
             return false;
@@ -80,14 +75,20 @@ class Ball {
 class Paddle {
     private int y = 0;
     private int size = 0;
+    private int x = 0;
 
     int show_size() {
         return size;
     }
 
-    Paddle(Field f, int size) {
+    Paddle(Field f, int size, boolean left) { // true = left , false  = rihgt
         this.y = f.show_size_Y() / 2;
         this.size = size;
+        if (left){
+            x = 1;
+        } else {
+            x = f.show_size_Y() - 2;
+        }
 
     }
 
@@ -97,6 +98,10 @@ class Paddle {
 
     int show_position_Y() {
         return y;
+    }
+
+    int show_position_X() {
+        return x;
     }
     
 
@@ -135,6 +140,13 @@ class Paddle {
 class Field {
     private int x = 0;
     private int y = 0;
+    private int store_left = 0;
+    private int store_right = 0;
+
+    Field(int store_left, int store_right){
+        this.store_left = store_left;
+        this.store_right = store_right;
+    }
 
     int show_size_X() {
         return x;
@@ -143,13 +155,23 @@ class Field {
     int show_size_Y() {
         return y;
     }
+        int show_store_left() {
+        return store_left;
+    }
+        int show_store_right() {
+        return store_right;
+    }
+    void change_Store(int store_left, int store_right) {
+        this.store_left = store_left;
+        this.store_right = store_right;
+    }
 
-    void changeField(int x, int y) {
+    void change_Field(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    void showField(Ball ball, Paddle left, Paddle right, int store_left, int store_right) {
+    void showField(Ball ball, Paddle left, Paddle right) {
         char c;
         for (int i = 0; i < y; i++) {
             for (int j = 0; j < x; j++) {
@@ -190,15 +212,14 @@ class Field {
 
 public class Pingpong {
     public static void main(String[] args) {
-        int store_left = 0, store_right = 0;
-        Field pole = new Field();
-        pole.changeField(51, 17);
-        Paddle left_Paddle = new Paddle(pole, 3);
-        Paddle right_Paddle = new Paddle(pole, 3);
+        Field pole = new Field(0, 0);
+        pole.change_Field(51, 17);
+        Paddle left_Paddle = new Paddle(pole, 3, true);
+        Paddle right_Paddle = new Paddle(pole, 3, false);
         Ball ball = new Ball(pole);
         Scanner sc = new Scanner(System.in);
         do {
-            pole.showField(ball, left_Paddle, right_Paddle, store_left, store_right);
+            pole.showField(ball, left_Paddle, right_Paddle);
             String select = sc.next();
             for (int i = 0; i < select.length(); i++) {
                 switch (select.charAt(i)) {
@@ -243,7 +264,7 @@ public class Pingpong {
 
                 }
             }
-        } while (store_left < 3 || store_right < 3);
+        } while (pole.show_store_left() < 3 || pole.show_store_right() < 3);
 
     }
 }
