@@ -13,8 +13,9 @@ class Ball {
     int show_position_X() {
         return x;
     }
-    void start(Field f, boolean left){
-        if (left){
+
+    void start(Field f, boolean left) {
+        if (left) {
             this.left = false;
             this.dawn = false;
         } else {
@@ -24,6 +25,7 @@ class Ball {
         this.x = f.show_size_X() / 2;
         this.y = f.show_size_Y() / 2;
     }
+
     int show_position_Y() {
         return y;
     }
@@ -43,7 +45,7 @@ class Ball {
         if (y == f.show_size_Y() - 2) {
             dawn = false;
         }
-        if (x == paddle_left.show_position_X()+1) {
+        if (x == paddle_left.show_position_X() + 1) {
             if (paddle(paddle_left)) {
                 left = !left;
             }
@@ -53,7 +55,7 @@ class Ball {
                 left = !left;
             }
         }
-        if (x == 1){
+        if (x == 1) {
             f.goal_left();
             start(f, true);
         }
@@ -162,10 +164,12 @@ class Field {
         this.store_left = store_left;
         this.store_right = store_right;
     }
-    void goal_left(){
+
+    void goal_left() {
         store_right++;
     }
-    void goal_right(){
+
+    void goal_right() {
         store_left++;
     }
 
@@ -207,17 +211,17 @@ class Field {
                     } else {
                         c = ' ';
                         if (i == ball.show_position_Y() && j == ball.show_position_X()) {
-                            c = 'o';
+                            c = '$';
                         } else {
                             if (j == 1) {
-                                if (i <= left.show_position_Y() + (left.show_size() / 2)
-                                        && i >= left.show_position_Y() - (left.show_size() / 2)) {
+                                if (i <= left.show_dawn_Y()
+                                        && i >= left.show_up_Y()) {
                                     c = '|';
                                 }
                             } else {
                                 if (j == x - 2) {
-                                    if (i <= right.show_position_Y() + (right.show_size() / 2)
-                                            && i >= right.show_position_Y() - (right.show_size() / 2)) {
+                                    if (i <= right.show_dawn_Y()
+                                            && i >= right.show_up_Y()) {
                                         c = '|';
                                     }
                                 }
@@ -231,10 +235,14 @@ class Field {
             System.out.println();
         }
         System.out.println("Store left:" + store_left + "   Store Right:" + store_right);
-       // System.out.println("paddle_left.show_position_X() - 1 =" + String.valueOf(left.show_position_X() + 1));
-       // System.out.println("paddle_right.show_position_X() + 1 =" + String.valueOf(right.show_position_X() - 1));
-       // System.out.println("ball_left.show_position_X()  =" + String.valueOf(ball.show_position_X()));
-        //System.out.println("ball_right.show_position_Y()  =" + String.valueOf(ball.show_position_Y()));
+        // System.out.println("paddle_left.show_position_X() - 1 =" +
+        // String.valueOf(left.show_position_X() + 1));
+        // System.out.println("paddle_right.show_position_X() + 1 =" +
+        // String.valueOf(right.show_position_X() - 1));
+        // System.out.println("ball_left.show_position_X() =" +
+        // String.valueOf(ball.show_position_X()));
+        // System.out.println("ball_right.show_position_Y() =" +
+        // String.valueOf(ball.show_position_Y()));
     }
 }
 
@@ -242,7 +250,7 @@ public class Pingpong {
     public static void main(String[] args) {
         Field pole = new Field(0, 0);
         pole.change_Field(51, 17);
-        Paddle left_Paddle = new Paddle(pole, 3, true);
+        Paddle left_Paddle = new Paddle(pole,4 , true);
         Paddle right_Paddle = new Paddle(pole, 3, false);
         Ball ball = new Ball(pole);
         Scanner sc = new Scanner(System.in);
@@ -292,12 +300,12 @@ public class Pingpong {
 
                 }
             }
-        } while (pole.show_store_left() < 3 || pole.show_store_right() < 3);
+        } while (pole.show_store_left() != 1 && pole.show_store_right() != 1);
 
         if (pole.show_store_left()>pole.show_store_right()){
-            System.out.println("Win left_paddle");
+            System.out.println("Win left_paddle with the score | left: " + pole.show_store_left()+" |right: " + pole.show_store_right()+ " |");
         } else{
-            System.out.println("Win right_paddle");
+            System.out.println("Win right_paddle with the score | right: " + pole.show_store_right() + " |left: " + pole.show_store_left() + " |");
         }
     }
 }
