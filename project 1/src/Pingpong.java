@@ -6,14 +6,24 @@ class Ball {
     boolean left = true, dawn = true;
 
     Ball(Field f) {
-        this.x = f.show_size_X() / 2 - 1;
-        this.y = f.show_size_Y() / 2 - 1;
+        this.x = f.show_size_X() / 2;
+        this.y = f.show_size_Y() / 2;
     }
 
     int show_position_X() {
         return x;
     }
-
+    void start(Field f, boolean left){
+        if (left){
+            this.left = false;
+            this.dawn = false;
+        } else {
+            this.left = true;
+            this.dawn = true;
+        }
+        this.x = f.show_size_X() / 2;
+        this.y = f.show_size_Y() / 2;
+    }
     int show_position_Y() {
         return y;
     }
@@ -27,27 +37,31 @@ class Ball {
     }
 
     void next(Field f, Paddle paddle_left, Paddle paddle_right) {
-            if (y == 1) {
-                dawn = true;
-                next();
+        if (y == 1) {
+            dawn = true;
+        }
+        if (y == f.show_size_Y() - 2) {
+            dawn = false;
+        }
+        if (x == paddle_left.show_position_X()+1) {
+            if (paddle(paddle_left)) {
+                left = !left;
             }
-            if (y == f.show_size_Y() - 2) {
-                dawn = false;
-                next();
+        }
+        if (x == paddle_right.show_position_X() - 1) {
+            if (paddle(paddle_right)) {
+                left = !left;
             }
-            if (x == 2 || x == f.show_size_X() - 3) {
-                if (paddle(paddle_left) || paddle(paddle_right)) {
-                    if (y == 1 || y == f.show_size_Y() - 2) {
-                        dawn = !dawn;
-                        left = !left;
-                    } else {
-                        left = !left;
-                        next();
-                    }
-                } else {
-                    next();
-                }
-            }
+        }
+        if (x == 1){
+            f.goal_left();
+            start(f, true);
+        }
+        if (x == f.show_size_X() - 2) {
+            f.goal_right();
+            start(f, false);
+        }
+        next();
     }
 
     private void next() {
@@ -63,8 +77,9 @@ class Ball {
             y--;
         }
     }
-    private boolean paddle(Paddle p){
-        if ((y >= p.show_up_Y()) && (y <= p.show_dawn_Y()) &&  (p.show_position_X() - x) <= 1){
+
+    private boolean paddle(Paddle p) {
+        if ((y >= p.show_up_Y()) && (y <= p.show_dawn_Y())) {
             return true;
         } else {
             return false;
@@ -81,13 +96,13 @@ class Paddle {
         return size;
     }
 
-    Paddle(Field f, int size, boolean left) { // true = left , false  = rihgt
+    Paddle(Field f, int size, boolean left) { // true = left , false = rihgt
         this.y = f.show_size_Y() / 2;
         this.size = size;
-        if (left){
+        if (left) {
             x = 1;
         } else {
-            x = f.show_size_Y() - 2;
+            x = f.show_size_X() - 2;
         }
 
     }
@@ -103,24 +118,24 @@ class Paddle {
     int show_position_X() {
         return x;
     }
-    
 
     void position_change_Y(int y) {
         this.y = y;
     }
 
-    int show_up_Y (){
-        if (size % 2 == 0){
-            return y - size/2 + 1;
-        }else {
-            return y - size/2 ;
+    int show_up_Y() {
+        if (size % 2 == 0) {
+            return y - size / 2 + 1;
+        } else {
+            return y - size / 2;
         }
     }
-    int show_dawn_Y (){
-        if (size % 2 == 0){
-            return y + size/2 ;
-        }else {
-            return y + size/2 ;
+
+    int show_dawn_Y() {
+        if (size % 2 == 0) {
+            return y + size / 2;
+        } else {
+            return y + size / 2;
         }
     }
 
@@ -130,8 +145,8 @@ class Paddle {
         }
     }
 
-    void dawn(Field pole){
-        if (show_dawn_Y() < pole.show_size_Y() -2){
+    void dawn(Field pole) {
+        if (show_dawn_Y() < pole.show_size_Y() - 2) {
             y++;
         }
     }
@@ -143,9 +158,15 @@ class Field {
     private int store_left = 0;
     private int store_right = 0;
 
-    Field(int store_left, int store_right){
+    Field(int store_left, int store_right) {
         this.store_left = store_left;
         this.store_right = store_right;
+    }
+    void goal_left(){
+        store_right++;
+    }
+    void goal_right(){
+        store_left++;
     }
 
     int show_size_X() {
@@ -155,12 +176,15 @@ class Field {
     int show_size_Y() {
         return y;
     }
-        int show_store_left() {
+
+    int show_store_left() {
         return store_left;
     }
-        int show_store_right() {
+
+    int show_store_right() {
         return store_right;
     }
+
     void change_Store(int store_left, int store_right) {
         this.store_left = store_left;
         this.store_right = store_right;
@@ -207,6 +231,10 @@ class Field {
             System.out.println();
         }
         System.out.println("Store left:" + store_left + "   Store Right:" + store_right);
+       // System.out.println("paddle_left.show_position_X() - 1 =" + String.valueOf(left.show_position_X() + 1));
+       // System.out.println("paddle_right.show_position_X() + 1 =" + String.valueOf(right.show_position_X() - 1));
+       // System.out.println("ball_left.show_position_X()  =" + String.valueOf(ball.show_position_X()));
+        //System.out.println("ball_right.show_position_Y()  =" + String.valueOf(ball.show_position_Y()));
     }
 }
 
@@ -266,5 +294,10 @@ public class Pingpong {
             }
         } while (pole.show_store_left() < 3 || pole.show_store_right() < 3);
 
+        if (pole.show_store_left()>pole.show_store_right()){
+            System.out.println("Win left_paddle");
+        } else{
+            System.out.println("Win right_paddle");
+        }
     }
 }
