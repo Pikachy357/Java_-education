@@ -7,7 +7,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 
-public class Main {
+public class Bracket {
 
     static class Pack {
         String s;
@@ -41,7 +41,7 @@ public class Main {
                 }
 
             }
-            if (stack.peek() != null) {
+            if (!stack.isEmpty()) {
                 return false;
             }
             return true;
