@@ -6,7 +6,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
-public class Main {
+public class Task_1 {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -74,12 +74,6 @@ public class Main {
                 writer.write("\n");
             }
         }
-        /*
-        Пример ввода и вывода числа n, где -10^9 < n < 10^9:
-        int n = Integer.parseInt(reader.readLine());
-        writer.write(String.valueOf(n));
-        */
-
         reader.close();
         writer.close();
     }
