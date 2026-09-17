@@ -29,7 +29,7 @@ public class Kontest11 {
                     count = 1;
                 }
             }
-            if (delete && i - count > = 0){
+            if (delete && i - count >= 0){
                 int j =  count;
                 count2 = 1;
                 while (short_balls[i - j] == short_balls[i+1]){
